@@ -1,0 +1,104 @@
+#+TITLE: Org Mode - 用文本管理你的人生
+#+LANGUAGE: zh_CN
+
+org-mode 是Carsten Dominik 创造的一个及其强大的工具，可以基于文本进行日程管理。它是Emacs的一部分。
+
+* How To Use This Document
+* License
+* Change History
+* 开始
+从org-mode开始使用是很简单的，你只需要在emacs的启动脚本中添加几行，就可以从git库中使用最新的org-mode。
+** 使用git安装org-mode
+我本地保存着一份org-mode的git库拷贝在~/git/org/org-mode/文件夹中。通过使用以下命令:
+#+begin_src sh
+cd ~/git
+git clone git://orgmode.org/org-mode.git
+#+end_src
+
+如果要更新到最新的版本，你可以使用：
+#+begin_src sh
+cd ~/git/org-mode
+git pull
+make uncompiled
+#+end_src
+
+我执行以上命令来保证我可以使用到最新的代码。
+我通常都会保持我本地和org-mode的master一致。
+
+以下的配置会在绝大部分emacs的缓冲区开启org-mode。默认org-mode会在编辑.org,.org-archive 和.txt后缀的文件时开启.
+#+begin_src emacs-lisp
+;;;
+;;; Org Mode
+;;;
+(add-to-list 'load-path (expand-file-name "~/git/org-mode/lisp"))
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(require 'org)
+;;
+;; Standard key bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+#+end_src
+
+#+header: :tangle yes
+#+begin_src emacs-lisp :exports none
+;;;你可以通过覆盖 org-mode-user-lisp-path这个变量来定义成你自己的配置
+;;
+(if (boundp 'org-mode-user-lisp-path)
+    (add-to-list 'load-path org-mode-user-lisp-path)
+  (add-to-list 'load-path (expand-file-name "~/git/org-mode/lisp")))
+
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(require 'org)
+;;
+;; Standard key bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+#+end_src
+
+这就是所有你需要你需要的配置。
+现在你就可以使用org-mode的大纲和列表了。
+
+这篇文档的其他部分都是用来描述我现在的一些自定义的配置，我如何组织我的org-mode文件和我的一些对org-mode的修改，让它更加适应我的工作流。
+
+** 用org文件管理你的人生
+任务通常都会被按照组或者项目进行组织。使用不同的文件对任务分组。使用多个子文件夹来将不同项目的文件归类在一起。
+
+这是我一些我使用的简单文件。
+
+这些文件收集了我的一些非工作的任务。
+| 文件名       | 描述                       |
+| todo.org     | 用来放个人的一些任务和事情 |
+| gsoc2009.org | 谷歌2009编程夏令营         |
+| farm.org     | 农场相关的任务             |
+| mark.org     | 关于我的儿子Mark的一些任务 |
+| org.org      | org-mode相关的一些任务     |
+| git.org      | git相关的一些任务          |
+
+以下的文件放着使用org capture 捕获的一些任务
+| 文件名     | 描述     |
+| refile.org | 捕获文件 |
+
+以下的文件用于存放我工作上的一些任务和笔记。（虚构的）
+| 文件名      | 描述                   |
+| norang.org  | Norang公司的任务和笔记 |
+| XYZ.org     | XYZ公司的任务和笔记    |
+| ABC.org     | ABC公司任务            |
+| ABC-DEF.org | ABC公司的客户DEF任务   |
+| ABC-KKK.org | ABC公司的客户KKK任务   |
+| YYY.org     | KKK公司任务            |
+
+
+org-mode 是一个极好的用于处理多个客户，多个客户项目的工具。一个org文件可以收集一个项目的所有笔记，任务等。
+
+ABC公司，有我的许多客户。我把每个客户的任务都单独新建一个org文件，当我有新的客户或者丢失了以前的客户时，就可以将一整个文件添加到我的agenda中，或者整个移出。来保证我的agenda视图的简洁。
+
+其他的org文件只用于发布，并不会参与到agenda中。看[[#Pulishing][Publishing and Exporting]] 来查看详细信息。
+
+** agenda设置
+这是我目前的org-agenda-files的设置。
+#+begin_src emacs-lisp
+(setq org-agenda-files (quote 
+
+#+end_src
